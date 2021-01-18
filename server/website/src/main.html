@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Player-Movement</title>
+    <link rel="stylesheet" href="src/style.css" />
+    <link rel="shortcut icon" href="src/pictures/favicon.ico" />
+  </head>
+  <body>
+    <div id="Chat">
+      <input id="Chat-input" type="text" placeholder="Press [ENTER] to chat..." />
+      <div id="innerChat"></div>
+    </div>
+    <div id="reloading">
+      <div id="reloading-background"></div>
+      <img id="reloading-arrow" alt="Reloading" src="src/pictures/rotate.svg" />
+      <img id="reloading-bullets" alt="..." src="src/pictures/bullets.svg" />
+    </div>
+    <div id="bullets">
+      <div id="bullet-count"><span id="bullet-count-remaining">14</span>/14</div>
+      <img alt="Bullets:" src="src/pictures/bullets.svg" />
+    </div>
+    <div id="PlayerName">
+      <div id="PlayerName-innerDIV">
+        <input id="PlayerName-input" type="text" />
+        <span id="PlayerName-error"></span>
+      </div>
+    </div>
+    <div id="devStage">Pre-Alpha</div>
+    <!-- <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r122/three.min.js"
+      integrity="sha512-bzjaf85dHTL4H0BvkAJ/Jbvxqf1rDj+jVpCNe3oxQj/RXSnkx1HnKhqIcmMWghxEAbXsYgddrc38saWpltlkug=="
+      crossorigin="anonymous"
+    ></script> -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"></script> -->
+    <!-- <script src="../js/PointerLockControls.js"></script> -->
+    <!-- <script src="TrackballControls.js"></script> -->
+    <!-- <script src="../js/GLTFLoader.js"></script> -->
+    <!-- <script src="../js//OrbitControls.js"></script> -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/tween.js/18.6.4/tween.umd.js"
+      integrity="sha512-lIKG1kC5TMb1Zx32vdz1n31YJMZRknVY20U9MJ28hD3y2c0OKN0Ce5NhJji78v8zX5UOSsm+MTBOcJt7yMBnSg=="
+      crossorigin="anonymous"
+    ></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.1/socket.io.js"></script>
+    <script type="module" src="src/main.js"></script>
+    <!-- <script src="index.js"></script> -->
+  </body>
+</html>

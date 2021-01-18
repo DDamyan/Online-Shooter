@@ -1,8 +1,6 @@
-//import Players from './Players.js';
 import * as THREE from 'https://unpkg.com/three@0.123.0/build/three.module.js';
 import {GLTFLoader} from '../js/GLTFLoader.module.js';
 import stats from '../js/Stats.js';
-//import Dev from './Dev.js';
 import {World} from './world.js';
 
 let scene,

@@ -9,7 +9,7 @@ const ValidSpeed = 8,
   PlayerRadius = 1,
   MAGAZIN = 14,
   RELOAD_TIME = 1500,
-  DigitRound = Math.pow(10, 9);
+  DigitRound = Math.pow(10, 8);
 
 const randomColor = () =>
   '#' +
@@ -18,8 +18,15 @@ const randomColor = () =>
     .padStart(6, 'f');
 
 //Express setup
-const express = require('express')();
-var server = express.listen(8080, () => {
+const express = require('express');
+const app = express();
+app.use(express.static('website'));
+
+app.get('/', function (req, res) {
+  res.sendFile(__dirname + '/website/src/main.html');
+});
+
+var server = app.listen(8080, () => {
   console.log('running -> http://localhost:8080/');
 });
 
@@ -56,6 +63,7 @@ IO.on('connection', socket => {
     if (data.playerSpeed === ValidSpeed && players[socket.id].playerSpeed === ValidSpeed) {
       const A = data.position.x - players[socket.id].lastPosition.x;
       const B = data.position.z - players[socket.id].lastPosition.z;
+
       const RoundServerDistance = Math.floor(Math.sqrt(A * A + B * B) * DigitRound) / DigitRound;
       const RoundClientDistance =
         Math.floor(data.playerSpeed * data.delta * DigitRound) / DigitRound;
@@ -126,12 +134,13 @@ IO.on('connection', socket => {
 
       var hitted = CheckHIT(players, bullet.position, socket.id);
       if (hitted) {
+        console.log('HIT  !!!!');
         bullet.expire = true;
         clearInterval(ShotIntervals[bullet.ID]);
         //console.log(players[hitted].name, 'got hit by', players[socket.id].name);
 
         IO.emit('Chat', {
-          message: players[socket.id].name + ' >>> ' + players[hitted].name,
+          message: players[socket.id].name + ' 🕱 ' + players[hitted].name,
           name: 'Killed',
           color: players[socket.id].color,
         });
