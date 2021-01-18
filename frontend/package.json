@@ -11,5 +11,6 @@
     "js"
   ],
   "author": "DDA",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {}
 }
