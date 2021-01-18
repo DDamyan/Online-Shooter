@@ -80,7 +80,7 @@ IO.on('connection', socket => {
   });
 
   socket.on('Username', NewName => {
-    if (NewName.length > 3) {
+    if (NewName.length > 2) {
       let NameTaken = false;
       Object.entries(players).map(([_, {name}]) => {
         if (name) {
@@ -101,7 +101,7 @@ IO.on('connection', socket => {
       } else {
         socket.emit('PlayerNameError', 'Name already taken.');
       }
-    } else socket.emit('PlayerNameError', 'Name too short, min. 4 chars.');
+    } else socket.emit('PlayerNameError', 'Name too short, min. 3 chars.');
   });
 
   var ShotIntervals = {};
@@ -115,13 +115,13 @@ IO.on('connection', socket => {
       bullet.expire = true;
     } else {
       var UnitsToMove = Number(
-        (((1000 - (maxAge.getTime() - new Date().getTime())) * 0.2) / 5).toFixed(2),
+        (((1000 - (maxAge.getTime() - new Date().getTime())) * 0.1) / 5).toFixed(2),
       );
       //bullet.position = UnitsToMove;
 
       bullet.position = {
-        z: bullet.origin.z + UnitsToMove * Math.cos(bullet.rotation),
-        x: bullet.origin.x + UnitsToMove * Math.sin(bullet.rotation),
+        z: bullet.origin.z + (UnitsToMove + 2) * Math.cos(bullet.rotation),
+        x: bullet.origin.x + (UnitsToMove + 2) * Math.sin(bullet.rotation),
       };
 
       var hitted = CheckHIT(players, bullet.position, socket.id);

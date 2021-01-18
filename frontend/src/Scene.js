@@ -256,13 +256,16 @@ document.addEventListener(
   },
   false,
 );
-
-document.addEventListener('click', e => {
-  // e.preventDefault();
-  // e.stopPropagation();
+document.addEventListener('mousedown', e => {
   if (e.target.id.indexOf('PlayerName') === -1)
     socket.emit('shot', {...model.getWorldPosition(new THREE.Vector3())});
 });
+//document.addEventListener('click', e => {
+// e.preventDefault();
+// e.stopPropagation();
+// if (e.target.id.indexOf('PlayerName') === -1)
+//   socket.emit('shot', {...model.getWorldPosition(new THREE.Vector3())});
+//});
 
 function ConnectWebsocket() {
   //const getOtherPlayers = _obj => Object.entries(_obj).filter(val => val.indexOf(socket.id) === -1);
@@ -350,15 +353,18 @@ function ConnectWebsocket() {
 
       var bll = World.bullet();
       bll.rotation.y = bullet.rotation;
-      bll.position.set(bullet.origin.x, bullet.origin.y + 0.7, bullet.origin.z);
+      bll.position.set(bullet.position.x, bullet.origin.y + 0.7, bullet.position.z);
+      // bll.position.set(bullet.origin.x, bullet.origin.y + 0.7, bullet.origin.z);
+
       //bll.translateX(player.geometry.parameters.radius);
       //bll.translateZ(2.3);
       //bll.userData.lastPosition = 0;
+
       scene.add(bll);
 
       AllBullets[bullet.ID] = bll;
 
-      RemainingBullets.textContent = bullet.remaining;
+      if (bullet.gunner === socket.id) RemainingBullets.textContent = bullet.remaining;
     }
 
     // Intervals[data.ID] = setInterval(() => handle_Shot(data, bullet), 10);

@@ -10,6 +10,17 @@
   --reloading-visible: hidden;
 }
 
+#devStage {
+  position: absolute;
+  left: -50px;
+  bottom: 20px;
+  background-color: rgb(17, 182, 17);
+  padding: 15px 50px;
+  color: rgb(116, 245, 116);
+  font-weight: bold;
+  transform: rotate(45deg);
+}
+
 /*THREE.js*/
 body {
   margin: 0;
