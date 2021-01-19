@@ -16,9 +16,43 @@
   bottom: 20px;
   background-color: rgb(17, 182, 17);
   padding: 15px 50px;
-  color: rgb(116, 245, 116);
+  color: rgb(181, 250, 181);
   font-weight: bold;
   transform: rotate(45deg);
+  pointer-events: none;
+}
+
+.damage {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+
+  pointer-events: none;
+
+  /* transition: opacity 0.3s ease-in-out; */
+
+  background: radial-gradient(circle, transparent 76%, rgba(194, 0, 0, 0.6) 100%);
+  opacity: 0;
+
+  animation-name: opacityAnimation;
+  animation-duration: 0.7s;
+  animation-iteration-count: 1;
+}
+
+/* .damage.active {
+   opacity: 1; 
+} */
+
+@keyframes opacityAnimation {
+  0% {
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 
 /*THREE.js*/

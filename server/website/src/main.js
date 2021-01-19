@@ -246,12 +246,14 @@ function ConnectWebsocket() {
   });
 
   socket.on('GPS', data => {
+    //console.log(data[socket.id]);
     const LP = data[socket.id].lastPosition;
     playerPosition.position.set(LP.x, LP.y, LP.z);
+    player.position.copy(playerPosition.position);
 
     if (ValidName) {
       Object.entries(data)
-        .filter(([x]) => x !== socket.id)
+        .filter(([x]) => x !== socket.id) // not myself
         .map(([ID, curr]) => {
           if (typeof curr.validName !== 'undefined' && curr.validName) {
             if (!KnownPlayer[ID]) {
@@ -265,6 +267,9 @@ function ConnectWebsocket() {
               newSphere.name = 'player';
               newSphere.rotation.y = curr.rotation;
               tempObj.add(newSphere);
+
+              //console.log(model.name);
+              //console.log(newSphere.children[0].name);
 
               var nameTag = new THREE.Mesh(
                 new THREE.TextGeometry(curr.name, {
@@ -285,6 +290,11 @@ function ConnectWebsocket() {
             } else {
               // already known
               KnownPlayer[ID].getObjectByName('player').rotation.y = curr.rotation;
+              if (curr.weapon.IsReloading) {
+                KnownPlayer[ID].getObjectByName(model.name).rotation.x = Math.PI;
+              } else {
+                KnownPlayer[ID].getObjectByName(model.name).rotation.x = Math.PI / -2;
+              }
               KnownPlayer[ID].position.set(
                 curr.lastPosition.x,
                 curr.lastPosition.y,
@@ -294,6 +304,17 @@ function ConnectWebsocket() {
           }
         });
     }
+  });
+
+  socket.on('damage', () => {
+    console.log('!!!BIG DAMAGE!!!');
+
+    var newEle = document.createElement('div');
+    newEle.classList.add('damage');
+    document.body.prepend(newEle);
+    setTimeout(() => {
+      newEle.remove();
+    }, 1000);
   });
 
   socket.on('invalidGPS', data => {
