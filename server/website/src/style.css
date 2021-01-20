@@ -57,6 +57,8 @@
 
 /*THREE.js*/
 body {
+  top: 0px;
+  left: 0px;
   margin: 0;
   overflow: hidden;
 }
@@ -70,6 +72,53 @@ canvas {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
+}
+
+/*KILLCOUNTER*/
+#kill {
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  font-weight: bold;
+  font-size: 18px;
+  padding: 10px;
+}
+
+/*OPTIONS*/
+#options {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  padding: 10px 30px;
+  width: 40px;
+  height: 40px;
+}
+
+#options-arrow {
+  position: absolute;
+  right: -5px;
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(180deg);
+  font-size: 24px;
+}
+
+#options-arrow.rotate {
+  transform: translate(-50%, -50%) rotate(0deg);
+}
+
+#options > img#options-img {
+  width: inherit;
+  height: inherit;
+}
+
+#options-options {
+  position: absolute;
+  top: 69%;
+  right: 5px;
+}
+
+#options-options p {
+  white-space: nowrap;
 }
 
 /*CHAT*/

@@ -90,7 +90,8 @@ function init() {
   //wconst controls = new THREE.OrbitControls(camera, renderer.domElement);
   stat = stats();
   stat.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
-  stat.domElement.style.cssText = 'position: absolute; top:0px; right: 0px;';
+  stat.domElement.style.cssText =
+    'position: absolute; top:0px; left: 50%; transform: translateX(-50%);';
   document.body.appendChild(stat.dom);
   // // // //
 }
@@ -246,12 +247,11 @@ function ConnectWebsocket() {
   });
 
   socket.on('GPS', data => {
-    //console.log(data[socket.id]);
-    const LP = data[socket.id].lastPosition;
-    playerPosition.position.set(LP.x, LP.y, LP.z);
-    player.position.copy(playerPosition.position);
-
     if (ValidName) {
+      const LP = data[socket.id].lastPosition;
+      playerPosition.position.set(LP.x, LP.y, LP.z);
+      player.position.copy(playerPosition.position);
+
       Object.entries(data)
         .filter(([x]) => x !== socket.id) // not myself
         .map(([ID, curr]) => {
@@ -307,14 +307,16 @@ function ConnectWebsocket() {
   });
 
   socket.on('damage', () => {
-    console.log('!!!BIG DAMAGE!!!');
-
     var newEle = document.createElement('div');
     newEle.classList.add('damage');
     document.body.prepend(newEle);
     setTimeout(() => {
       newEle.remove();
     }, 1000);
+  });
+
+  socket.on('kills', killCount => {
+    document.getElementById('kill-counter').textContent = killCount;
   });
 
   socket.on('invalidGPS', data => {
@@ -334,26 +336,27 @@ function ConnectWebsocket() {
   });
 
   socket.on('playerLeft', id => {
-    scene
-      .getObjectByProperty('uuid', KnownPlayer[id].getObjectByName('player').uuid)
-      .geometry.dispose();
-    scene
-      .getObjectByProperty('uuid', KnownPlayer[id].getObjectByName('player').uuid)
-      .material.dispose();
+    if (KnownPlayer.hasOwnProperty(id)) {
+      scene
+        .getObjectByProperty('uuid', KnownPlayer[id].getObjectByName('player').uuid)
+        .geometry.dispose();
+      scene
+        .getObjectByProperty('uuid', KnownPlayer[id].getObjectByName('player').uuid)
+        .material.dispose();
 
-    scene
-      .getObjectByProperty('uuid', KnownPlayer[id].getObjectByName('username').uuid)
-      .geometry.dispose();
-    scene
-      .getObjectByProperty('uuid', KnownPlayer[id].getObjectByName('username').uuid)
-      .material.dispose();
+      scene
+        .getObjectByProperty('uuid', KnownPlayer[id].getObjectByName('username').uuid)
+        .geometry.dispose();
+      scene
+        .getObjectByProperty('uuid', KnownPlayer[id].getObjectByName('username').uuid)
+        .material.dispose();
 
-    scene.remove(KnownPlayer[id].getObjectByName('player'));
-    scene.remove(
-      scene.getObjectByProperty('uuid', KnownPlayer[id].getObjectByName('username').uuid),
-    );
-    scene.remove(scene.getObjectByProperty('uuid', KnownPlayer[id].uuid));
-
+      scene.remove(KnownPlayer[id].getObjectByName('player'));
+      scene.remove(
+        scene.getObjectByProperty('uuid', KnownPlayer[id].getObjectByName('username').uuid),
+      );
+      scene.remove(scene.getObjectByProperty('uuid', KnownPlayer[id].uuid));
+    }
     delete KnownPlayer[id];
   });
 
@@ -435,7 +438,8 @@ document.addEventListener(
 );
 
 document.addEventListener('mousedown', e => {
-  if (e.target.id.indexOf('PlayerName') === -1)
+  const targetID = e.target.id;
+  if (targetID.indexOf('PlayerName') === -1 && targetID.indexOf('options') === -1)
     socket.emit('shot', {...model.getWorldPosition(new THREE.Vector3())});
 });
 
@@ -480,6 +484,18 @@ document.getElementById('PlayerName-input').addEventListener('keyup', e => {
     socket.emit('Username', e.target.value);
   }
 });
+
+document.getElementById('options').addEventListener('click', () => {
+  document.getElementById('options-arrow').classList.toggle('rotate');
+});
+
+document.getElementById('options-options').addEventListener('click', e => {
+  e.stopPropagation();
+
+  console.log(e.target.id);
+  //TODO: properties (von <p>) abfangen und dementsprechend verfahren
+});
+
 // // DEV:
 //socket.emit('Username', 'e.target.value');
 // // // //

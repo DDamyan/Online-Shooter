@@ -6,7 +6,7 @@ const {WeaponInRange, CheckHIT} = require('./functions');
 const ValidSpeed = 8,
   //BulletSpeed = 0.5,
   MAX_BULLET_AGE = 1,
-  BULLET_DAMAGE = 10,
+  BULLET_DAMAGE = 50,
   PLAYER_RADIUS = 1,
   MAGAZIN = 14,
   RELOAD_TIME = 1500,
@@ -45,6 +45,7 @@ IO.on('connection', socket => {
       rotation: data.rotation,
       radius: data.radius,
       playerSpeed: data.playerSpeed,
+      kills: 0,
       weapon: {ammo: MAGAZIN, lastShot: new Date(), IsReloading: false, shots: []},
     };
     //IO.emit('newPlayer', players[socket.id]);
@@ -147,6 +148,8 @@ IO.on('connection', socket => {
             healthPoints: 100,
             lastPosition: {x: 0, y: 1, z: 0},
           };
+          players[bullet.gunner].kills++;
+          socket.emit('kills', players[bullet.gunner].kills);
           IO.emit('GPS', players);
           IO.emit('Chat', {
             message: players[bullet.gunner].name + ' 🕱 ' + players[hitted].name,
@@ -161,7 +164,6 @@ IO.on('connection', socket => {
   }
 
   socket.on('reload', () => {
-    console.log('RRR');
     var weapon = players[socket.id].weapon;
 
     if (!weapon.IsReloading && weapon.ammo < MAGAZIN) {
