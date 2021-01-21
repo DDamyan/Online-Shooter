@@ -12,6 +12,9 @@
       <input id="Chat-input" type="text" placeholder="Press [ENTER] to chat..." />
       <div id="innerChat"></div>
     </div>
+    <div id="healthpoints">
+      <div id="healthpoints-fill"></div>
+    </div>
     <div id="reloading">
       <div id="reloading-background"></div>
       <img id="reloading-arrow" alt="Reloading" src="src/pictures/rotate.svg" />
@@ -24,11 +27,15 @@
     <div id="options">
       <img id="options-img" alt="Options" src="src/pictures/zahnrad.svg" />
       <div id="options-arrow">▲</div>
-      <div id="options-options">
+      <div id="options-options" style="display: none">
         <p id="options-devStage">
-        Show development stage</td>
-        <input type="checkbox" />
-      </p>
+          Show development stage
+          <input id="options-devStage-checkbox" type="checkbox" checked />
+        </p>
+        <p id="options-sound">
+          Sound on/off
+          <input id="options-sound-checkbox" type="checkbox" checked />
+        </p>
       </div>
     </div>
     <div id="PlayerName">

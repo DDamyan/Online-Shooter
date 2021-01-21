@@ -19,6 +19,7 @@ let scene,
   laser,
   font,
   ValidName = false,
+  playSound = true,
   dir = new THREE.Vector3(),
   playerSpeed = 8,
   clock = new THREE.Clock();
@@ -99,6 +100,7 @@ function init() {
 // // ANIMATE // //
 function animate() {
   requestAnimationFrame(animate);
+
   stat.update();
   var delta = clock.getDelta();
 
@@ -221,9 +223,11 @@ function ConnectWebsocket() {
       AllBullets[bullet.ID].position.x = bullet.position.x;
     } else {
       // Unknown => create
-      var audio = new Audio('src/sounds/M16_short.mp3');
-      audio.volume = 0.5;
-      audio.play();
+      if (playSound) {
+        var audio = new Audio('src/sounds/M16_short.mp3');
+        audio.volume = 0.5;
+        audio.play();
+      }
 
       var bll = World.bullet();
       bll.rotation.y = bullet.rotation;
@@ -306,13 +310,21 @@ function ConnectWebsocket() {
     }
   });
 
-  socket.on('damage', () => {
+  socket.on('damage', remainigHealth => {
     var newEle = document.createElement('div');
     newEle.classList.add('damage');
     document.body.prepend(newEle);
     setTimeout(() => {
       newEle.remove();
     }, 1000);
+
+    const MAX_HEALTH = 100;
+    const HSL_PERCENT = remainigHealth / MAX_HEALTH;
+    const MAX_HSL = 90;
+
+    var healthpointsFill = document.getElementById('healthpoints-fill');
+    healthpointsFill.style.width = remainigHealth + '%';
+    healthpointsFill.style.backgroundColor = `hsl(${HSL_PERCENT * MAX_HSL}, 85%, 50%)`;
   });
 
   socket.on('kills', killCount => {
@@ -485,15 +497,27 @@ document.getElementById('PlayerName-input').addEventListener('keyup', e => {
   }
 });
 
-document.getElementById('options').addEventListener('click', () => {
+// OPTIONS
+
+var displayToggle = true;
+
+const toggleOptions = function (e) {
   document.getElementById('options-arrow').classList.toggle('rotate');
+  document
+    .getElementById('options-options')
+    .style.setProperty('display', displayToggle ? 'block' : 'none');
+  displayToggle = !displayToggle;
+};
+
+document.getElementById('options-img').addEventListener('click', toggleOptions);
+document.getElementById('options-arrow').addEventListener('click', toggleOptions);
+
+document.getElementById('options-devStage-checkbox').addEventListener('change', function () {
+  document.getElementById('devStage').style.setProperty('display', this.checked ? 'block' : 'none');
 });
 
-document.getElementById('options-options').addEventListener('click', e => {
-  e.stopPropagation();
-
-  console.log(e.target.id);
-  //TODO: properties (von <p>) abfangen und dementsprechend verfahren
+document.getElementById('options-sound-checkbox').addEventListener('change', function () {
+  playSound = this.checked;
 });
 
 // // DEV:

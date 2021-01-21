@@ -113,12 +113,38 @@ canvas {
 
 #options-options {
   position: absolute;
-  top: 69%;
+  top: 100%;
   right: 5px;
 }
 
 #options-options p {
   white-space: nowrap;
+  margin: 0px;
+  background-color: #50505096;
+  color: white;
+  padding: 5px;
+  margin-bottom: 3px;
+  text-align: right;
+}
+
+/* HEALTHPOINTS */
+#healthpoints {
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, 0%);
+  position: absolute;
+  width: 30%;
+  height: 10px;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 5px;
+  box-shadow: black 0px 0px 1px 2px;
+}
+
+#healthpoints-fill {
+  width: 100%;
+  height: 100%;
+  background-color: hsl(90, 85%, 50%);
+  border-radius: 5px;
 }
 
 /*CHAT*/

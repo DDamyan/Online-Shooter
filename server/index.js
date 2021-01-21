@@ -4,13 +4,14 @@ const {uid} = require('uid');
 const {WeaponInRange, CheckHIT} = require('./functions');
 
 const ValidSpeed = 8,
+  VALIDSPEED_RANGE = 0.6,
   //BulletSpeed = 0.5,
   MAX_BULLET_AGE = 1,
-  BULLET_DAMAGE = 50,
+  BULLET_DAMAGE = 25,
   PLAYER_RADIUS = 1,
   MAGAZIN = 14,
   RELOAD_TIME = 1500,
-  DigitRound = Math.pow(10, 8);
+  DigitRound = Math.pow(10, 6); // ??? => 9
 
 const randomColor = () =>
   '#' +
@@ -40,6 +41,7 @@ IO.on('connection', socket => {
     players[socket.id] = {
       ...players[socket.id],
       lastPosition: data.position,
+      lastUpdate: new Date(),
       color: randomColor(),
       healthPoints: 100,
       rotation: data.rotation,
@@ -70,13 +72,31 @@ IO.on('connection', socket => {
       const RoundClientDistance =
         Math.floor(data.playerSpeed * data.delta * DigitRound) / DigitRound;
 
-      if (RoundServerDistance === RoundClientDistance) {
+      console.log(data.delta);
+      const speedCalculation = RoundServerDistance / data.delta;
+      // if (
+      //   speedCalculation < ValidSpeed + VALIDSPEED_RANGE &&
+      //   speedCalculation > ValidSpeed - VALIDSPEED_RANGE
+      // )
+      //   console.log('test:', speedCalculation, ' ===> ', 8);
+      // console.log(new Date(players[socket.id].lastUpdate) - new Date());
+      // players[socket.id].lastUpdate = new Date();
+      if (
+        RoundServerDistance === RoundClientDistance &&
+        speedCalculation < ValidSpeed + VALIDSPEED_RANGE &&
+        speedCalculation > ValidSpeed - VALIDSPEED_RANGE
+      ) {
         if (players[socket.id].validName) {
           players[socket.id].lastPosition = data.position;
           players[socket.id].rotation = data.rotation;
         }
+        console.log(RoundServerDistance, '===', RoundClientDistance);
         IO.emit('GPS', players);
-      } else socket.emit('invalidGPS', players);
+      } else {
+        socket.emit('invalidGPS', players);
+        console.log('test:', speedCalculation, ' ===> ', 8);
+        console.log(' ===> INVALID ->', RoundServerDistance, '===', RoundClientDistance);
+      }
     } else socket.disconnect();
   });
 
@@ -140,7 +160,7 @@ IO.on('connection', socket => {
         clearInterval(ShotIntervals[bullet.ID]);
         //console.log(players[hitted].name, 'got hit by', players[socket.id].name);
         players[hitted].healthPoints -= BULLET_DAMAGE;
-        socket.broadcast.to(hitted).emit('damage');
+        socket.broadcast.to(hitted).emit('damage', players[hitted].healthPoints);
         if (players[hitted].healthPoints <= 0) {
           //players[hitted] is dead
           players[hitted] = {
@@ -156,6 +176,8 @@ IO.on('connection', socket => {
             name: 'Killed',
             color: players[socket.id].color,
           });
+
+          socket.broadcast.to(hitted).emit('damage', players[hitted].healthPoints);
         }
       }
     }

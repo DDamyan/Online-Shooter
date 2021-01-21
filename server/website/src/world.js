@@ -8,7 +8,7 @@ import * as THREE from 'https://unpkg.com/three@0.123.0/build/three.module.js';
 export const World = {
   player: color => {
     return new THREE.Mesh(
-      new THREE.SphereGeometry(1, 20, 20),
+      new THREE.SphereGeometry(1, 10, 10),
       new THREE.MeshPhongMaterial({color}),
     );
   },
