@@ -24,7 +24,7 @@ const randomColor = () =>
 const express = require('express');
 const app = express();
 
-app.use(express.static('website'));
+app.use(express.static('server/website'));
 app.get('/', function (req, res) {
   res.sendFile(__dirname + '/website/src/main.html');
 });
@@ -73,7 +73,7 @@ IO.on('connection', socket => {
       const RoundClientDistance =
         Math.floor(data.playerSpeed * data.delta * DigitRound) / DigitRound;
 
-      console.log(data.delta);
+      //console.log(data.delta);
       const speedCalculation = RoundServerDistance / data.delta;
       // if (
       //   speedCalculation < ValidSpeed + VALIDSPEED_RANGE &&
@@ -91,12 +91,12 @@ IO.on('connection', socket => {
           players[socket.id].lastPosition = data.position;
           players[socket.id].rotation = data.rotation;
         }
-        console.log(RoundServerDistance, '===', RoundClientDistance);
+        //console.log(RoundServerDistance, '===', RoundClientDistance);
         IO.emit('GPS', players);
       } else {
         socket.emit('invalidGPS', players);
-        console.log('test:', speedCalculation, ' ===> ', 8);
-        console.log(' ===> INVALID ->', RoundServerDistance, '===', RoundClientDistance);
+        //console.log('test:', speedCalculation, ' ===> ', 8);
+        //console.log(' ===> INVALID ->', RoundServerDistance, '===', RoundClientDistance);
       }
     } else socket.disconnect();
   });

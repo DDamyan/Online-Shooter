@@ -2,10 +2,10 @@
   "name": "server",
   "version": "1.0.0",
   "description": "Me: Damyan Damyanov",
-  "main": "index.js",
+  "main": "server/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "nodemon-start": "nodemon index.js"
+    "nodemon-start": "nodemon server/index.js"
   },
   "author": "DDA",
   "license": "ISC",
