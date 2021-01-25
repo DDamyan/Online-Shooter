@@ -1,0 +1,24 @@
+{
+  "name": "online-shotergame",
+  "version": "1.0.0",
+  "description": "Multiplayer online game, where you play a ball against other players.",
+  "main": "server/index.js",
+  "dependencies": {
+    "nodemon": "^2.0.6",
+    "express": "^4.17.1",
+    "socket.io": "^3.0.4",
+    "uid": "^2.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Online",
+    "Multiplayer",
+    "Three.js",
+    "Socket.IO"
+  ],
+  "author": "Damyan Damyanov (DDA)",
+  "license": "ISC"
+}
