@@ -1,3 +1,7 @@
 # Online-Shooter
 
-Me: Damyan Damyanov
+Author: Damyan Damyanov
+
+# Deploy to heroku:
+
+git push heroku master

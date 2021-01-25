@@ -3,7 +3,8 @@ var players = {};
 const {uid} = require('uid');
 const {WeaponInRange, CheckHIT} = require('./functions');
 
-const ValidSpeed = 8,
+const PORT = process.env.PORT || 3000,
+  ValidSpeed = 8,
   VALIDSPEED_RANGE = 0.6,
   //BulletSpeed = 0.5,
   MAX_BULLET_AGE = 1,
@@ -28,7 +29,7 @@ app.get('/', function (req, res) {
   res.sendFile(__dirname + '/website/src/main.html');
 });
 
-var server = app.listen(8080, () => {
+var server = app.listen(PORT, () => {
   console.log('running -> http://localhost:8080/');
 });
 
@@ -72,7 +73,7 @@ IO.on('connection', socket => {
       const RoundClientDistance =
         Math.floor(data.playerSpeed * data.delta * DigitRound) / DigitRound;
 
-      console.log(data.delta);
+      //console.log(data.delta);
       const speedCalculation = RoundServerDistance / data.delta;
       // if (
       //   speedCalculation < ValidSpeed + VALIDSPEED_RANGE &&
@@ -90,12 +91,12 @@ IO.on('connection', socket => {
           players[socket.id].lastPosition = data.position;
           players[socket.id].rotation = data.rotation;
         }
-        console.log(RoundServerDistance, '===', RoundClientDistance);
+        //console.log(RoundServerDistance, '===', RoundClientDistance);
         IO.emit('GPS', players);
       } else {
         socket.emit('invalidGPS', players);
-        console.log('test:', speedCalculation, ' ===> ', 8);
-        console.log(' ===> INVALID ->', RoundServerDistance, '===', RoundClientDistance);
+        //console.log('test:', speedCalculation, ' ===> ', 8);
+        //console.log(' ===> INVALID ->', RoundServerDistance, '===', RoundClientDistance);
       }
     } else socket.disconnect();
   });
