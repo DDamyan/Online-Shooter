@@ -26,8 +26,9 @@ let scene,
 
 const RELOAD_TIME = 1500;
 const RELOAD_INVERVAL = 10;
+const HOST = location.origin.replace(/^http/, 'ws');
 
-const socket = io('ws://localhost:8080', {transports: ['websocket']});
+const socket = io(HOST, {transports: ['websocket']});
 
 var RemainingBullets = document.getElementById('bullet-count-remaining');
 
