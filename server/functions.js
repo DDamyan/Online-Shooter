@@ -10,7 +10,9 @@ const InRange = function (num1, num2) {
 exports.CheckHIT = function (players, bulletPos, socketID) {
   var Hitted = null;
   Object.entries(players)
-    .filter(([ID]) => ID !== socketID)
+    .filter(([ID, res]) => {
+      return ID !== socketID && res.hasOwnProperty('validName');
+    })
     .map(([curr_ID, {lastPosition}]) => {
       if (InRange(lastPosition.x, bulletPos.x) && InRange(lastPosition.z, bulletPos.z))
         Hitted = curr_ID;

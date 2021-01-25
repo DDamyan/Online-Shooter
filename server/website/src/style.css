@@ -16,13 +16,49 @@
   bottom: 20px;
   background-color: rgb(17, 182, 17);
   padding: 15px 50px;
-  color: rgb(116, 245, 116);
+  color: rgb(181, 250, 181);
   font-weight: bold;
   transform: rotate(45deg);
+  pointer-events: none;
+}
+
+.damage {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+
+  pointer-events: none;
+
+  /* transition: opacity 0.3s ease-in-out; */
+
+  background: radial-gradient(circle, transparent 76%, rgba(194, 0, 0, 0.6) 100%);
+  opacity: 0;
+
+  animation-name: opacityAnimation;
+  animation-duration: 0.7s;
+  animation-iteration-count: 1;
+}
+
+/* .damage.active {
+   opacity: 1; 
+} */
+
+@keyframes opacityAnimation {
+  0% {
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 
 /*THREE.js*/
 body {
+  top: 0px;
+  left: 0px;
   margin: 0;
   overflow: hidden;
 }
@@ -36,6 +72,79 @@ canvas {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
+}
+
+/*KILLCOUNTER*/
+#kill {
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  font-weight: bold;
+  font-size: 18px;
+  padding: 10px;
+}
+
+/*OPTIONS*/
+#options {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  padding: 10px 30px;
+  width: 40px;
+  height: 40px;
+}
+
+#options-arrow {
+  position: absolute;
+  right: -5px;
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(180deg);
+  font-size: 24px;
+}
+
+#options-arrow.rotate {
+  transform: translate(-50%, -50%) rotate(0deg);
+}
+
+#options > img#options-img {
+  width: inherit;
+  height: inherit;
+}
+
+#options-options {
+  position: absolute;
+  top: 100%;
+  right: 5px;
+}
+
+#options-options p {
+  white-space: nowrap;
+  margin: 0px;
+  background-color: #50505096;
+  color: white;
+  padding: 5px;
+  margin-bottom: 3px;
+  text-align: right;
+}
+
+/* HEALTHPOINTS */
+#healthpoints {
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, 0%);
+  position: absolute;
+  width: 30%;
+  height: 10px;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 5px;
+  box-shadow: black 0px 0px 1px 2px;
+}
+
+#healthpoints-fill {
+  width: 100%;
+  height: 100%;
+  background-color: hsl(90, 85%, 50%);
+  border-radius: 5px;
 }
 
 /*CHAT*/

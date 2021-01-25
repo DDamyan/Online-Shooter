@@ -4,28 +4,49 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Player-Movement</title>
-    <link rel="stylesheet" href="style.css" />
-    <link rel="shortcut icon" href=".\pictures\favicon.ico" />
+    <link rel="stylesheet" href="src/style.css" />
+    <link rel="shortcut icon" href="src/pictures/favicon.ico" />
   </head>
   <body>
     <div id="Chat">
       <input id="Chat-input" type="text" placeholder="Press [ENTER] to chat..." />
       <div id="innerChat"></div>
     </div>
+    <div id="healthpoints">
+      <div id="healthpoints-fill"></div>
+    </div>
     <div id="reloading">
       <div id="reloading-background"></div>
-      <img id="reloading-arrow" alt="Reloading" src="pictures/rotate.svg" />
-      <img id="reloading-bullets" alt="..." src="pictures/bullets.svg" />
+      <img id="reloading-arrow" alt="Reloading" src="src/pictures/rotate.svg" />
+      <img id="reloading-bullets" alt="..." src="src/pictures/bullets.svg" />
     </div>
     <div id="bullets">
       <div id="bullet-count"><span id="bullet-count-remaining">14</span>/14</div>
-      <img alt="Bullets:" src="pictures/bullets.svg" />
+      <img alt="Bullets:" src="src/pictures/bullets.svg" />
+    </div>
+    <div id="options">
+      <img id="options-img" alt="Options" src="src/pictures/zahnrad.svg" />
+      <div id="options-arrow">▲</div>
+      <div id="options-options" style="display: none">
+        <p id="options-devStage">
+          Show development stage
+          <input id="options-devStage-checkbox" type="checkbox" checked />
+        </p>
+        <p id="options-sound">
+          Sound on/off
+          <input id="options-sound-checkbox" type="checkbox" checked />
+        </p>
+      </div>
     </div>
     <div id="PlayerName">
       <div id="PlayerName-innerDIV">
         <input id="PlayerName-input" type="text" />
         <span id="PlayerName-error"></span>
       </div>
+    </div>
+    <div id="kill">
+      Kills:
+      <span id="kill-counter">0</span>
     </div>
     <div id="devStage">Pre-Alpha</div>
     <!-- <script
@@ -45,7 +66,7 @@
     ></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.1/socket.io.js"></script>
-    <script type="module" src="Scene.js"></script>
+    <script type="module" src="src/main.js"></script>
     <!-- <script src="index.js"></script> -->
   </body>
 </html>
