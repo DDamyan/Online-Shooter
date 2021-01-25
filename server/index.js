@@ -24,13 +24,13 @@ const randomColor = () =>
 const express = require('express');
 const app = express();
 
-app.use(express.static('website'));
+app.use(express.static('server/website'));
 app.get('/', function (req, res) {
   res.sendFile(__dirname + '/website/src/main.html');
 });
 
 var server = app.listen(PORT, () => {
-  console.log('running -> http://localhost:8080/');
+  console.log(`running at PORT -> ${PORT}`);
 });
 
 //Socket setup

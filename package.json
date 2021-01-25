@@ -4,14 +4,16 @@
   "description": "Multiplayer online game, where you play a ball against other players.",
   "main": "server/index.js",
   "dependencies": {
-    "nodemon": "^2.0.6",
     "express": "^4.17.1",
     "socket.io": "^3.0.4",
     "uid": "^2.0.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "nodemon-start": "nodemon server/index.js"
   },
   "keywords": [
     "Online",
