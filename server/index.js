@@ -84,6 +84,7 @@ IO.on('connection', socket => {
       //   console.log('test:', speedCalculation, ' ===> ', 8);
       // console.log(new Date(players[socket.id].lastUpdate) - new Date());
       // players[socket.id].lastUpdate = new Date();
+      console.log(data.positionEmits);
       if (
         true
         // RoundServerDistance <= RoundClientDistance && // was ===
@@ -94,6 +95,7 @@ IO.on('connection', socket => {
           players[socket.id].lastPosition = data.position;
           players[socket.id].rotation = data.rotation;
         }
+        players[socket.id].positionEmits = data.positionEmits;
         //console.log(RoundServerDistance, '===', RoundClientDistance);
         IO.emit('GPS', players);
         plusDelta = 0;

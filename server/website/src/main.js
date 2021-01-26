@@ -22,6 +22,7 @@ let scene,
   playSound = true,
   dir = new THREE.Vector3(),
   playerSpeed = 8,
+  positionEmits = 0,
   clock = new THREE.Clock();
 
 const RELOAD_TIME = 1500;
@@ -158,6 +159,7 @@ function animate() {
           rotation: player.rotation.y,
           delta,
           playerSpeed,
+          positionEmits: positionEmits++,
         });
       }
     }
@@ -253,9 +255,13 @@ function ConnectWebsocket() {
 
   socket.on('GPS', data => {
     if (ValidName) {
-      const LP = data[socket.id].lastPosition;
-      playerPosition.position.set(LP.x, LP.y, LP.z);
-      player.position.copy(playerPosition.position);
+      console.log(positionEmits - 1, '===', data[socket.id].positionEmits);
+      if (positionEmits - 1 === data[socket.id].positionEmits) {
+        console.log('TRUE', true);
+        const LP = data[socket.id].lastPosition;
+        playerPosition.position.set(LP.x, LP.y, LP.z);
+        player.position.copy(playerPosition.position);
+      }
 
       Object.entries(data)
         .filter(([x]) => x !== socket.id) // not myself
