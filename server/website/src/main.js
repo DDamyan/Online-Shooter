@@ -255,9 +255,7 @@ function ConnectWebsocket() {
 
   socket.on('GPS', data => {
     if (ValidName) {
-      console.log(positionEmits - 1, '===', data[socket.id].positionEmits);
       if (positionEmits - 1 === data[socket.id].positionEmits) {
-        console.log('TRUE', true);
         const LP = data[socket.id].lastPosition;
         playerPosition.position.set(LP.x, LP.y, LP.z);
         player.position.copy(playerPosition.position);
@@ -442,13 +440,13 @@ document.addEventListener(
   'mousemove',
   event => {
     if (ValidName) {
-      player.rotation.y =
-        Math.atan2(
-          -(event.clientY / window.innerHeight) * 2 + 1,
-          (event.clientX / window.innerWidth) * 2 - 1,
-        ) +
-        Math.PI / 2 +
-        camera.rotation.y * 2;
+      const Client_X = ((event.clientX / window.innerWidth) * 2 - 1) * 1.5,
+        Client_Y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+      player.rotation.y = Math.atan2(Client_Y, Client_X) + Math.PI / 2 + camera.rotation.y * 2;
+
+      //player.lookAt(new THREE.Vector3(Client_X * 1.5, 1, -Client_Y * 1.3));
+      //player.lookAt(Client_X, 1, Client_Y);
 
       socket.emit('rotation', player.rotation.y);
     }
