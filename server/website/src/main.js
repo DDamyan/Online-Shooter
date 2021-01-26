@@ -5,7 +5,7 @@ import {World} from './world.js';
 
 let scene,
   camera,
-  camera_Offset = {y: 15, z: 8},
+  camera_Orbit,
   coords_camera,
   cam_tween,
   renderer,
@@ -20,7 +20,6 @@ let scene,
   font,
   ValidName = false,
   playSound = true,
-  dir = new THREE.Vector3(),
   playerSpeed = 8,
   positionEmits = 0,
   clock = new THREE.Clock();
@@ -41,7 +40,9 @@ function init() {
   scene = World.scene();
 
   camera = World.camera();
-  scene.add(camera);
+  camera_Orbit = new THREE.Object3D();
+  camera_Orbit.add(camera);
+  scene.add(camera_Orbit);
 
   var Ground = World.ground;
   Ground.rotateX(Math.PI / -2);
@@ -139,6 +140,11 @@ function animate() {
 
     if (keyPressed) {
       if ((!Backward || !Forward) && (!Left || !Right)) {
+        // dir = new THREE.Vector3();
+        // camera_Orbit.getWorldDirection(dir);
+        // var angl = Math.atan2(dir.x, dir.z);
+        // console.log(angl);
+
         var MoveRotation = Math.PI / 2;
         if (Backward) {
           MoveRotation = Math.PI / -2;
@@ -172,19 +178,24 @@ function animate() {
 // // TWEEN-ANIMATION // //
 setInterval(() => {
   if (cam_tween) cam_tween.stop();
-  coords_camera = {x: camera.position.x, y: camera.position.y, z: camera.position.z};
+  coords_camera = {
+    x: camera_Orbit.position.x,
+    y: camera_Orbit.position.y,
+    z: camera_Orbit.position.z,
+  };
   cam_tween = new TWEEN.Tween(coords_camera)
     .to(
       {
         x: playerPosition.position.x,
-        y: playerPosition.position.y + camera_Offset.y,
-        z: playerPosition.position.z + camera_Offset.z,
+        y: playerPosition.position.y, // + camera_Offset.y,
+        z: playerPosition.position.z, // + camera_Offset.z,
       },
       500,
     )
     //.easing(TWEEN.Easing.Circular.Out)
     .onUpdate(() => {
-      camera.position.set(coords_camera.x, coords_camera.y, coords_camera.z);
+      camera_Orbit.position.set(coords_camera.x, coords_camera.y, coords_camera.z);
+      //camera.position.set(coords_camera.x, coords_camera.y, coords_camera.z);
       camera.lookAt(playerPosition.position);
       camera.updateProjectionMatrix();
     })

@@ -19,3 +19,8 @@ exports.CheckHIT = function (players, bulletPos, socketID) {
     });
   return Hitted;
 };
+
+exports.RDM = function randomIntFromInterval(min, max) {
+  // min and max included
+  return Math.floor(Math.random() * (max - min + 1) + min);
+};

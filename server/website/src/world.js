@@ -34,13 +34,13 @@ export const World = {
       new THREE.MeshBasicMaterial({color: 0xcf9611}),
     ),
   ground: new THREE.Mesh(
-    new THREE.PlaneGeometry(10, 10, 1, 1),
+    new THREE.PlaneGeometry(20, 20, 1, 1),
     new THREE.MeshBasicMaterial({color: '#5f9aba'}),
   ),
   camera: () => {
     let cam = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     cam.position.z = 10;
-    cam.position.y = 4;
+    cam.position.y = 20;
     return cam;
   },
   AmbientLight: new THREE.AmbientLight(0x404040, 4),

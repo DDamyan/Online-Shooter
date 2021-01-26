@@ -1,14 +1,16 @@
 var players = {};
 
 const {uid} = require('uid');
-const {WeaponInRange, CheckHIT} = require('./functions');
+const {WeaponInRange, CheckHIT, RDM} = require('./functions');
 
 const PORT = process.env.PORT || 3000,
   ValidSpeed = 8,
   VALIDSPEED_RANGE = 1,
+  MAP_SIZE = 10,
   //BulletSpeed = 0.5,
-  MAX_BULLET_AGE = 1,
+  MAX_BULLET_AGE = 1.5,
   BULLET_DAMAGE = 25,
+  BULLET_SPEED = 0.3,
   PLAYER_RADIUS = 1,
   MAGAZIN = 14,
   RELOAD_TIME = 1500,
@@ -76,7 +78,7 @@ IO.on('connection', socket => {
 
       //console.log(data.delta);
       const speedCalculation = RoundServerDistance / (data.delta + plusDelta);
-      console.log('speedCalculation', speedCalculation);
+      //console.log('speedCalculation', speedCalculation);
       // if (
       //   speedCalculation < ValidSpeed + VALIDSPEED_RANGE &&
       //   speedCalculation > ValidSpeed - VALIDSPEED_RANGE
@@ -84,14 +86,17 @@ IO.on('connection', socket => {
       //   console.log('test:', speedCalculation, ' ===> ', 8);
       // console.log(new Date(players[socket.id].lastUpdate) - new Date());
       // players[socket.id].lastUpdate = new Date();
-      console.log(data.positionEmits);
+      //console.log(data.positionEmits);
       if (
-        true
-        // RoundServerDistance <= RoundClientDistance && // was ===
-        // speedCalculation <= ValidSpeed + VALIDSPEED_RANGE //&& // was <
+        RoundServerDistance <= RoundClientDistance && // was ===
+        speedCalculation <= ValidSpeed + VALIDSPEED_RANGE //&& // was <
         // //speedCalculation > ValidSpeed - VALIDSPEED_RANGE
       ) {
         if (players[socket.id].validName) {
+          // data.position.x = data.position.x > MAP_SIZE ? MAP_SIZE : data.position.x;
+          // data.position.z = data.position.z > MAP_SIZE ? MAP_SIZE : data.position.z;
+          data.position.x = Math.min(Math.max(data.position.x, -MAP_SIZE), MAP_SIZE);
+          data.position.z = Math.min(Math.max(data.position.z, -MAP_SIZE), MAP_SIZE);
           players[socket.id].lastPosition = data.position;
           players[socket.id].rotation = data.rotation;
         }
@@ -154,7 +159,7 @@ IO.on('connection', socket => {
       bullet.expire = true;
     } else {
       var UnitsToMove = Number(
-        (((1000 - (maxAge.getTime() - new Date().getTime())) * 0.1) / 5).toFixed(2),
+        (((1000 - (maxAge.getTime() - new Date().getTime())) * BULLET_SPEED) / 5).toFixed(2),
       );
       //bullet.position = UnitsToMove;
 
@@ -171,12 +176,15 @@ IO.on('connection', socket => {
         players[hitted].healthPoints -= BULLET_DAMAGE;
         socket.broadcast.to(hitted).emit('damage', players[hitted].healthPoints);
         if (players[hitted].healthPoints <= 0) {
+          const x = RDM(-MAP_SIZE, MAP_SIZE),
+            z = RDM(-MAP_SIZE, MAP_SIZE);
           //players[hitted] is dead
           players[hitted] = {
             ...players[hitted],
             healthPoints: 100,
-            lastPosition: {x: 0, y: 1, z: 0},
+            lastPosition: {x, y: 1, z},
           };
+          //socket.broadcast.to(hitted).emit('dead', players[hitted]);
           players[bullet.gunner].kills++;
           socket.emit('kills', players[bullet.gunner].kills);
           IO.emit('GPS', players);
