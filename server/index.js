@@ -5,7 +5,7 @@ const {WeaponInRange, CheckHIT} = require('./functions');
 
 const PORT = process.env.PORT || 3000,
   ValidSpeed = 8,
-  VALIDSPEED_RANGE = 0.6,
+  VALIDSPEED_RANGE = 1,
   //BulletSpeed = 0.5,
   MAX_BULLET_AGE = 1,
   BULLET_DAMAGE = 25,
@@ -63,6 +63,7 @@ IO.on('connection', socket => {
     }
   });
 
+  var plusDelta = 0;
   socket.on('GPS', data => {
     //TODO: überprüfen ob letzte Client position mit letzte Server position übereintimt
     if (data.playerSpeed === ValidSpeed && players[socket.id].playerSpeed === ValidSpeed) {
@@ -74,7 +75,8 @@ IO.on('connection', socket => {
         Math.floor(data.playerSpeed * data.delta * DigitRound) / DigitRound;
 
       //console.log(data.delta);
-      const speedCalculation = RoundServerDistance / data.delta;
+      const speedCalculation = RoundServerDistance / (data.delta + plusDelta);
+      console.log('speedCalculation', speedCalculation);
       // if (
       //   speedCalculation < ValidSpeed + VALIDSPEED_RANGE &&
       //   speedCalculation > ValidSpeed - VALIDSPEED_RANGE
@@ -84,7 +86,7 @@ IO.on('connection', socket => {
       // players[socket.id].lastUpdate = new Date();
       if (
         RoundServerDistance <= RoundClientDistance && // was ===
-        speedCalculation <= ValidSpeed //&& // was <
+        speedCalculation <= ValidSpeed + VALIDSPEED_RANGE //&& // was <
         //speedCalculation > ValidSpeed - VALIDSPEED_RANGE
       ) {
         if (players[socket.id].validName) {
@@ -93,8 +95,11 @@ IO.on('connection', socket => {
         }
         //console.log(RoundServerDistance, '===', RoundClientDistance);
         IO.emit('GPS', players);
+        plusDelta = 0;
       } else {
+        plusDelta += data.delta;
         socket.emit('invalidGPS', players);
+        console.log('ERROR !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
         //console.log('test:', speedCalculation, ' ===> ', 8);
         //console.log(' ===> INVALID ->', RoundServerDistance, '===', RoundClientDistance);
       }
