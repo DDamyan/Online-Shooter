@@ -85,9 +85,10 @@ IO.on('connection', socket => {
       // console.log(new Date(players[socket.id].lastUpdate) - new Date());
       // players[socket.id].lastUpdate = new Date();
       if (
-        RoundServerDistance <= RoundClientDistance && // was ===
-        speedCalculation <= ValidSpeed + VALIDSPEED_RANGE //&& // was <
-        //speedCalculation > ValidSpeed - VALIDSPEED_RANGE
+        true
+        // RoundServerDistance <= RoundClientDistance && // was ===
+        // speedCalculation <= ValidSpeed + VALIDSPEED_RANGE //&& // was <
+        // //speedCalculation > ValidSpeed - VALIDSPEED_RANGE
       ) {
         if (players[socket.id].validName) {
           players[socket.id].lastPosition = data.position;
