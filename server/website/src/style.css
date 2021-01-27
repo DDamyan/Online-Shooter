@@ -1,4 +1,4 @@
-* {
+*:not(#PlayerName-input) {
   font-family: Arial, Helvetica, sans-serif;
   user-select: none;
   -moz-user-select: none;
@@ -73,6 +73,90 @@ canvas {
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
 }
+
+/*LOADER*/
+#loader {
+  --animation-time: 1.5s;
+
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  background-color: whitesmoke;
+
+  display: flex;
+  justify-content: space-between;
+  padding: 10%;
+}
+
+#loader > .loader-dot {
+  height: 20%;
+  margin: auto;
+  animation-duration: var(--animation-time);
+  animation-iteration-count: infinite;
+}
+
+#loader > .loader-dot:nth-child(1) {
+  animation-name: loading-1;
+}
+#loader > .loader-dot:nth-child(2) {
+  animation-name: loading-2;
+}
+#loader > .loader-dot:nth-child(3) {
+  animation-name: loading-1;
+  animation-direction: reverse;
+}
+
+@keyframes loading-1 {
+  6% {
+    transform: translateY(20px);
+  }
+  20% {
+    transform: translateY(-55px);
+  }
+  27% {
+    transform: translateY(20px);
+  }
+  0%,
+  33%,
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes loading-2 {
+  39% {
+    transform: translateY(20px);
+  }
+  53% {
+    transform: translateY(-55px);
+  }
+  60% {
+    transform: translateY(20px);
+  }
+  0%,
+  33%,
+  67% {
+    transform: translateY(0px);
+  }
+}
+
+/* @keyframes loading {
+
+  0% {
+    transform: translateY(0px);
+  }
+  15% {
+    transform: translateY(10px);
+  }
+  50% {
+    transform: translateY(-50px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+} */
 
 /*KILLCOUNTER*/
 #kill {
@@ -166,6 +250,10 @@ canvas {
   background-color: rgba(70, 70, 70, 0.2);
   position: absolute;
   cursor: default;
+
+  border: none;
+  box-shadow: inset 1px 1px 2px -1px;
+  padding: 5px 2px;
 }
 
 #Chat > input[type='text']:focus {
@@ -179,6 +267,7 @@ canvas {
 #innerChat {
   background-color: transparent;
   overflow-y: scroll;
+  overflow-x: hidden;
   width: 100%;
   height: 90%;
   position: absolute;

@@ -57,3 +57,26 @@ export const World = {
     return sc;
   },
 };
+
+export const LoadManager = function (N = 3) {
+  var loaded = Array.from({length: N}, () => false);
+
+  const onChange = () => {
+    if (loaded.indexOf(false) === -1) {
+      // Show Website
+      document.getElementById('loader').remove();
+    }
+  };
+
+  return {
+    set loaded(val) {
+      if (loaded.indexOf(false) !== -1) {
+        loaded[loaded.indexOf(false)] = val;
+        onChange();
+      }
+    },
+    get loaded() {
+      return loaded;
+    },
+  };
+};

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Player-Movement</title>
     <link rel="stylesheet" href="src/style.css" />
-    <link rel="shortcut icon" href="src/pictures/favicon.ico" />
+    <link rel="shortcut icon" type="image/x-icon" href="src/pictures/favicon.ico" />
   </head>
   <body>
     <div id="Chat">
@@ -21,6 +21,7 @@
       <img id="reloading-bullets" alt="..." src="src/pictures/bullets.svg" />
     </div>
     <div id="bullets">
+      <audio id="audio" src="src/sounds/M16_short.mp3"></audio>
       <div id="bullet-count"><span id="bullet-count-remaining">14</span>/14</div>
       <img alt="Bullets:" src="src/pictures/bullets.svg" />
     </div>
@@ -47,6 +48,13 @@
     <div id="kill">
       Kills:
       <span id="kill-counter">0</span>
+    </div>
+    <div id="loader">
+      <!-- <div id="loader-dot-container"> -->
+      <img class="loader-dot" alt="Loading..." src="src/pictures/dot.svg" />
+      <img class="loader-dot" src="src/pictures/dot.svg" />
+      <img class="loader-dot" src="src/pictures/dot.svg" />
+      <!-- </div> -->
     </div>
     <div id="devStage">Pre-Alpha</div>
     <!-- <script

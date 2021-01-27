@@ -1,7 +1,9 @@
 import * as THREE from 'https://unpkg.com/three@0.123.0/build/three.module.js';
 import {GLTFLoader} from '../js/GLTFLoader.module.js';
 import stats from '../js/Stats.js';
-import {World} from './world.js';
+import {World, LoadManager} from './world.js';
+
+const loadManger = new LoadManager(3);
 
 let scene,
   camera,
@@ -78,6 +80,8 @@ function init() {
     player.add(laser);
     player.add(model);
     scene.add(player);
+
+    loadManger.loaded = true;
   });
 
   scene.add(World.AmbientLight);
@@ -98,6 +102,7 @@ function init() {
     'position: absolute; top:0px; left: 50%; transform: translateX(-50%);';
   document.body.appendChild(stat.dom);
   // // // //
+  loadManger.loaded = true;
 }
 
 // // ANIMATE // //
@@ -115,7 +120,7 @@ function animate() {
       Right = false,
       keyPressed = false;
 
-    for (const [Key, Value] of Object.entries(map).filter(([_, bll]) => bll == true)) {
+    for (const [Key] of Object.entries(map).filter(([_, bll]) => bll == true)) {
       keyPressed = true;
 
       switch (Key) {
@@ -230,6 +235,10 @@ function ConnectWebsocket() {
 
   var AllBullets = {};
 
+  const onAudioEnd = function () {
+    this.remove();
+  };
+
   socket.on('shot', bullet => {
     if (typeof AllBullets[bullet.ID] !== 'undefined') {
       // Known => move
@@ -241,6 +250,7 @@ function ConnectWebsocket() {
         var audio = new Audio('src/sounds/M16_short.mp3');
         audio.volume = 0.5;
         audio.play();
+        audio.onended = onAudioEnd;
       }
 
       var bll = World.bullet();
@@ -439,6 +449,8 @@ function ConnectWebsocket() {
   socket.on('PlayerNameError', ErrorMessage => {
     document.getElementById('PlayerName-error').textContent = ErrorMessage;
   });
+
+  loadManger.loaded = true;
 }
 
 init();
@@ -506,8 +518,8 @@ document.getElementById('Chat-input').addEventListener('mousedown', e => {
 });
 
 document.getElementById('PlayerName-input').addEventListener('keyup', e => {
-  e.preventDefault();
-  e.stopPropagation();
+  //e.preventDefault();
+  //e.stopPropagation();
   if (e.key === 'Enter') {
     socket.emit('Username', e.target.value);
   }

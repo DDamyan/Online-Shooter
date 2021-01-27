@@ -107,7 +107,6 @@ IO.on('connection', socket => {
       } else {
         plusDelta += data.delta;
         socket.emit('invalidGPS', players);
-        console.log('ERROR !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
         //console.log('test:', speedCalculation, ' ===> ', 8);
         //console.log(' ===> INVALID ->', RoundServerDistance, '===', RoundClientDistance);
       }
